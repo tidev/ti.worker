@@ -15,18 +15,27 @@ Example
 The following is a trivial echo background service.  In your `app.js`, use the following:
 
 	var worker = require('ti.worker');
+	// create a worker thread instance
 	var task = worker.createWorker('echo.js');
+	// subscribe to any worker thread instance messages
 	task.addEventListener('message',function(event){
+		// data that is sent will be in the data property
 		alert(event.data);
+		// stop terminating this thread instance
 		task.terminate();
 	});
+	// send data to the worker thread which will be posted on the threads event queue
+	// you can send any data here
 	task.postMessage({
 		msg:'Hello'
 	});
 
 Now, in a separate file named `echo.js`, use the following:
 
+	// subscribe to events send with postMessage
 	worker.addEventListener('message',function(event){
+		// send data back to any subscribers
+		// pull data from the event from the data property
 		worker.postMessage(event.data.msg);
 	});
 
