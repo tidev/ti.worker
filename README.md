@@ -14,21 +14,21 @@ Example
 
 The following is a trivial echo background service.  In your `app.js`, use the following:
 
-<code>var worker = require('ti.worker');
-var task = worker.createWorker('echo.js');
-task.addEventListener('message',function(event){
-	alert(event.data);
-	task.terminate();
-});
-task.postMessage({
-	msg:'Hello'
-});</code>
+	var worker = require('ti.worker');
+	var task = worker.createWorker('echo.js');
+	task.addEventListener('message',function(event){
+		alert(event.data);
+		task.terminate();
+	});
+	task.postMessage({
+		msg:'Hello'
+	});
 
 Now, in a separate file named `echo.js`, use the following:
 
-<code>worker.addEventListener('message',function(event){
-	worker.postMessage(event.data.msg);
-});</code>
+	worker.addEventListener('message',function(event){
+		worker.postMessage(event.data.msg);
+	});
 
 Note: the `worker` global variable is always defined inside the worker thread execution context.
 
