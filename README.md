@@ -50,22 +50,22 @@ Note: the `worker` global variable is always defined inside the worker thread ex
 API
 ---
 
-*postMessage* - send a message to or from the worker thread.  Send any data as the first argument.
-*terminate* - terminate the worker thread and stop as soon as possible processing.
-*nextTick* - this method is only available inside the worker instance and provides an ability to process the function passed on the next available thread event loop cycle.
+- *postMessage* - send a message to or from the worker thread.  Send any data as the first argument.
+- *terminate* - terminate the worker thread and stop as soon as possible processing.
+- *nextTick* - this method is only available inside the worker instance and provides an ability to process the function passed on the next available thread event loop cycle.
 
 Events
 ------
 
-*message* - receive an event. The `data` property of the `event` will contain as-is any data specified as the first argument.
-*terminated* - the worker thread was terminated.
+- *message* - receive an event. The `data` property of the `event` will contain as-is any data specified as the first argument.
+- *terminated* - the worker thread was terminated.
 
 Properties
 ----------
 
 The `worker` instance has only one property:
 
-*url* - the url of the worker thread JS file passed in during creation.
+- *url* - the url of the worker thread JS file passed in during creation.
 
 
 Warning
