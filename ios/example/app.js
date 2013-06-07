@@ -1,39 +1,87 @@
-// This is a test harness for your module
-// You should do something interesting in this harness 
-// to test out the module and to provide instructions 
-// to users on how to use it by example.
-
-
-// open a single window
-var win = Ti.UI.createWindow({
-	backgroundColor:'white'
+var window = Ti.UI.createWindow();
+var view = Ti.UI.createView({
+    backgroundColor:"white"
 });
-var label = Ti.UI.createLabel();
-win.add(label);
-win.open();
 
-// TODO: write your module tests here
-var tiworker = require('info.rborn.tiworker');
-Ti.API.info("module is => " + tiworker);
+var label1 = Ti.UI.createLabel({
+    text:"Calculating prime",
+    width: Ti.UI.FILL,
+    height:Ti.UI.FIT,
+    textAlign:"center",
+    color:"red",
+    top:10
+});
 
-label.text = tiworker.example();
+var label2 = Ti.UI.createLabel({
+    text:"Calculating prime",
+    width: Ti.UI.FILL,
+    height:Ti.UI.FIT,
+    textAlign:"center",
+    color:"green",
+    top:40
+});
 
-Ti.API.info("module exampleProp is => " + tiworker.exampleProp);
-tiworker.exampleProp = "This is a test value";
+var label3 = Ti.UI.createLabel({
+    text:"Calculating prime",
+    width: Ti.UI.FILL,
+    height:Ti.UI.FIT,
+    textAlign:"center",
+    color:"blue",
+    top:70
+});
 
-if (Ti.Platform.name == "android") {
-	var proxy = tiworker.createExample({
-		message: "Creating an example Proxy",
-		backgroundColor: "red",
-		width: 100,
-		height: 100,
-		top: 100,
-		left: 150
-	});
+var button = Ti.UI.createButton({
+    title:"Terminate",
+    width:Ti.UI.FIT,
+    height:Ti.UI.FIT,
+    top:100
+});
 
-	proxy.printMessage("Hello world!");
-	proxy.message = "Hi world!.  It's me again.";
-	proxy.printMessage("Hello world!");
-	win.add(proxy);
-}
+window.add(view);
+view.add(label1);
+view.add(label2);
+view.add(label3);
+view.add(button);
+window.open();
+
+var worker = require("ti.worker");
+
+/**
+ * create threads
+ */
+var thread1 = worker.createWorker("prime.js");
+thread1.addEventListener("message",function(event){
+    label1.text = event.data;
+});
+
+
+console.log(JSON.stringify(thread1));
+
+// var thread2 = worker.createWorker("prime.js");
+// thread2.addEventListener("message",function(event){
+    // label2.text = event.data;
+// });
+// 
+// var thread3 = worker.createWorker("prime.js");
+// thread3.addEventListener("message",function(event){
+    // label3.text = event.data;
+// });
+
+thread1.addEventListener("terminated",function(){
+   label1.text = "Terminated"; 
+});
+
+// thread2.addEventListener("terminated",function(){
+   // label2.text = "Terminated"; 
+// });
+// 
+// thread3.addEventListener("terminated",function(){
+   // label3.text = "Terminated"; 
+// });
+
+button.addEventListener("click",function(){
+   thread1.terminate({dummy:true});
+   // thread2.terminate();
+   // thread3.terminate(); 
+});
 
