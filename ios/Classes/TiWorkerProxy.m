@@ -206,7 +206,8 @@
     if (_bridge)
     {
         _booted = NO;
-        [_bridge enqueueEvent:@"terminated" forProxy:_selfProxy withObject:args withSource:_selfProxy];
+        [_bridge enqueueEvent:@"terminated" forProxy:_selfProxy withObject:args /*withSource:_selfProxy*/];
+        // [_bridge enqueueEvent:@"terminated" forProxy:_selfProxy withObject:args withSource:_selfProxy];
         // we need to give time to process the terminated event
         [self performSelector:@selector(shutdown:) withObject:nil afterDelay:0.5];
         [self fireEvent:@"terminated"];
