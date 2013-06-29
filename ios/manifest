@@ -2,17 +2,17 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 0.1
+version: 1.0
 apiversion: 2
-description: My module
-author: Your Name
-license: Specify your license
-copyright: Copyright (c) 2013 by Your Company
+description: An iOS worker pool
+author: Jeff Haynie
+license: Apache Public License v2
+copyright: Appcelerator
 
 
 # these should not be edited
-name: tiworker
-moduleid: info.rborn.tiworker
-guid: fbcbc4f7-8eb7-438f-9aea-cb746069d219
+name: iosworkermodule
+moduleid: ti.worker
+guid: d97e8b6c-a598-4b21-be51-26449733a49d
 platform: iphone
 minsdk: 3.1.0.GA

@@ -55,33 +55,31 @@ thread1.addEventListener("message",function(event){
 });
 
 
-console.log(JSON.stringify(thread1));
+var thread2 = worker.createWorker("prime.js");
+thread2.addEventListener("message",function(event){
+    label2.text = event.data;
+});
 
-// var thread2 = worker.createWorker("prime.js");
-// thread2.addEventListener("message",function(event){
-    // label2.text = event.data;
-// });
-// 
-// var thread3 = worker.createWorker("prime.js");
-// thread3.addEventListener("message",function(event){
-    // label3.text = event.data;
-// });
+var thread3 = worker.createWorker("prime.js");
+thread3.addEventListener("message",function(event){
+    label3.text = event.data;
+});
 
 thread1.addEventListener("terminated",function(){
    label1.text = "Terminated"; 
 });
 
-// thread2.addEventListener("terminated",function(){
-   // label2.text = "Terminated"; 
-// });
-// 
-// thread3.addEventListener("terminated",function(){
-   // label3.text = "Terminated"; 
-// });
+thread2.addEventListener("terminated",function(){
+   label2.text = "Terminated"; 
+});
+
+thread3.addEventListener("terminated",function(){
+   label3.text = "Terminated"; 
+});
 
 button.addEventListener("click",function(){
-   thread1.terminate({dummy:true});
-   // thread2.terminate();
-   // thread3.terminate(); 
+   thread1.terminate();
+   thread2.terminate();
+   thread3.terminate(); 
 });
 

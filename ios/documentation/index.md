@@ -1,16 +1,16 @@
-# tiworker Module
+# iosworkermodule Module
 
 ## Description
 
 TODO: Enter your module description here
 
-## Accessing the tiworker Module
+## Accessing the iosworkermodule Module
 
 To access this module from JavaScript, you would do the following:
 
-	var tiworker = require("info.rborn.tiworker");
+	var iosworkermodule = require("ti.worker");
 
-The tiworker variable is a reference to the Module object.	
+The iosworkermodule variable is a reference to the Module object.	
 
 ## Reference
 
