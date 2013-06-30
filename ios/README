@@ -94,7 +94,7 @@ Register your module with your application by editing `tiapp.xml` and adding you
 Example:
 
 <modules>
-	<module version="0.1">info.rborn.tiworker</module>
+	<module version="0.1">ti.worker</module>
 </modules>
 
 When you run your project, the compiler will know automatically compile in your module
@@ -107,7 +107,7 @@ To use your module in code, you will need to require it.
 
 For example,
 
-	var my_module = require('info.rborn.tiworker');
+	var my_module = require('ti.worker');
 	my_module.foo();
 
 WRITING PURE JS NATIVE MODULES
@@ -116,7 +116,7 @@ WRITING PURE JS NATIVE MODULES
 You can write a pure JavaScript "natively compiled" module.  This is nice if you
 want to distribute a JS module pre-compiled.
 
-To create a module, create a file named info.rborn.tiworker.js under the assets folder.
+To create a module, create a file named ti.worker.js under the assets folder.
 This file must be in the Common JS format.  For example:
 
 	exports.echo = function(s)

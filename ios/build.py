@@ -67,7 +67,7 @@ def generate_doc(config):
 	return documentation
 
 def compile_js(manifest,config):
-	js_file = os.path.join(cwd,'assets','info.rborn.tiworker.js')
+	js_file = os.path.join(cwd,'assets','ti.worker.js')
 	if not os.path.exists(js_file): return
 
 	from compiler import Compiler
