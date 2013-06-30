@@ -6,6 +6,9 @@
 
 30.06.2013
 
-rebuild for new Ti SDK 3.1.0.GA
-added the changes made by @nassosyian - https://github.com/nassosyian/ti.worker
-fix the terminate method
+
+- rebuild for new Ti SDK 3.1.0.GA
+- added the changes made by @nassosyian - https://github.com/nassosyian/ti.worker
+- fix the terminate method
+- fixed prime.js to stop looping when the worker is terminated
+- added compiled module
