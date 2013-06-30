@@ -1,1 +1,11 @@
-Place your change log text here.  This file will be incorporated with your app at package time.
+1.0
+---
+
+- initial release
+
+
+30.06.2013
+
+rebuild for new Ti SDK 3.1.0.GA
+added the changes made by @nassosyian - https://github.com/nassosyian/ti.worker
+fix the terminate method
