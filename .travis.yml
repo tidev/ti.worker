@@ -1,0 +1,53 @@
+language: objective-c
+before_install:
+    - MODULE_ROOT=$PWD
+install: 
+    - mkdir -p /Library/Application\ Support/Titanium/sdks/
+    - mkdir -p python
+    
+    # install py markdown
+    - export PYTHONPATH=${PYTHONPATH}:$PWD/support
+    
+    # Android SDK seems to require newer version of SDK
+    - wget http://api.appcelerator.net/p/v1/release-download?token=34yycjh6 -O /Library/Application\ Support/Titanium/mobilesdk-2.1.3.GA-osx.zip
+    - cd /Library/Application\ Support/Titanium/
+    - unzip -o  mobilesdk-2.1.3.GA-osx.zip
+ 
+    
+    # IOS uses v.1.6
+    #- wget http://api.appcelerator.net/p/v1/release-download?token=y4qAVWK3 -O /Library/Application\ Support/Titanium/mobilesdk-1.6.0-osx.zip
+    #- cd /Library/Application\ Support/Titanium/
+    #- unzip -o mobilesdk-1.6.0-osx.zip
+
+    # Install Android SDK
+    - cd /Library/Application\ Support/Titanium/sdks/
+    - wget http://dl.google.com/android/android-sdk_r22.6.2-macosx.zip
+    - unzip -o android-sdk_r22.6.2-macosx.zip
+    - export ANDROID_HOME=${PWD}/android-sdk-macosx
+
+    - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+
+    # Install required Android components.
+    - echo "y" | android update sdk --filter platform-tools,android-8,android-10,addon-google_apis-google-10,extra-android-support,$ANDROID_SDKS --no-ui --force
+    
+    # Install require Android NDK
+    - cd $MODULE_ROOT
+    # NDK r9d
+    #- wget http://dl.google.com/android/ndk/android-ndk-r9d-darwin-x86.tar.bz2
+    #- tar xzf android-ndk-r9d-darwin-x86.tar.bz2
+    #- export ANDROID_NDK=${PWD}/android-ndk-r9d
+    
+    # NDK r8c
+    - wget http://dl.google.com/android/ndk/android-ndk-r8c-darwin-x86.tar.bz2
+    - tar xzf android-ndk-r8c-darwin-x86.tar.bz2
+    - export ANDROID_NDK=${PWD}/android-ndk-r8c
+    
+before_script:
+    - cd $MODULE_ROOT
+script: 
+    - cd $MODULE_ROOT/ios/
+    - ./build.py
+    
+    - cd $MODULE_ROOT/android/
+    - ant clean
+    - ant
