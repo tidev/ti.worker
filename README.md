@@ -1,5 +1,4 @@
-Titanium Worker Thread Module
-=============================
+# Titanium Worker Thread Module [![Build Status](https://travis-ci.org/appcelerator-modules/ti.worker.png)](https://travis-ci.org/appcelerator-modules/ti.worker)
 
 This is a Titanium module that provides a [Web Worker](http://www.whatwg.org/specs/web-apps/current-work) like interface to applications built with Titanium.
 
