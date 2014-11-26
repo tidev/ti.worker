@@ -63,6 +63,7 @@
 		if(error != nil)
 		{
 			//TODO: ?
+			NSLog(@"TiWorkerProxy makeTemp createDirectoryAtPath error: %@", [error localizedDescription]);
 			return nil;
 		}
 	}
@@ -80,6 +81,7 @@
 	if (error != nil)
 	{
 		//TODO: ?
+		NSLog(@"TiWorkerProxy makeTemp writeToFile error: %@", [error localizedDescription]);
 		return nil;
 	}
     return resultPath;	
@@ -89,6 +91,29 @@
 {
     if ((self = [super _initWithPageContext:pg]))
     {
+		if (!path)
+		{
+			NSLog(@"ti.worker module error: path is nil");
+		}
+		else 
+		{
+			if ([path isEqualToString:@""])
+			{
+				NSLog(@"ti.worker module error: path is empty");
+			}
+			else
+			{
+				NSLog(@"ti.worker 'path' is '%@'", path);
+			}
+		}
+		
+			
+		if (!host)
+			NSLog(@"ti.worker module error: host is nil");
+		
+		if (!pg)
+			NSLog(@"ti.worker module error: pg is nil");
+	
         // the kroll bridge is effectively our JS thread environment
         _bridge = [[KrollBridge alloc] initWithHost:host];
         NSURL *_url = [TiUtils toURL:path proxy:self];
@@ -124,10 +149,12 @@
         
         // we delete file below when booted
         _tempFile = [[self makeTemp:[wrapper dataUsingEncoding:NSUTF8StringEncoding]] retain];
-        NSURL *tempurl = [NSURL URLWithString:_tempFile];
+		NSLog(@"ti.worker tempFile path is %@", _tempFile);
+        NSURL *tempurl = [NSURL fileURLWithPath:_tempFile isDirectory:NO];// URLWithString:_tempFile];
+		NSLog(@"ti.worker temp url is %@", tempurl.absoluteString);
         
         // start the boot which will run on its own thread automatically
-        [_bridge boot:self url:tempurl preload:preload];        
+        [_bridge boot:self url:tempurl preload:preload];
     }
     return self;
 }
@@ -179,7 +206,8 @@
     if (_bridge)
     {
         _booted = NO;
-        [_bridge enqueueEvent:@"terminated" forProxy:_selfProxy withObject:args withSource:_selfProxy];
+        [_bridge enqueueEvent:@"terminated" forProxy:_selfProxy withObject:args /*withSource:_selfProxy*/];
+        // [_bridge enqueueEvent:@"terminated" forProxy:_selfProxy withObject:args withSource:_selfProxy];
         // we need to give time to process the terminated event
         [self performSelector:@selector(shutdown:) withObject:nil afterDelay:0.5];
         [self fireEvent:@"terminated"];
@@ -197,7 +225,7 @@
     {
         ENSURE_SINGLE_ARG(args,NSObject); 
         NSDictionary *dict = [NSDictionary dictionaryWithObject:args forKey:@"data"];
-        [_bridge enqueueEvent:@"message" forProxy:_selfProxy withObject:dict withSource:_selfProxy];
+        [_bridge enqueueEvent:@"message" forProxy:_selfProxy withObject:dict /*withSource:_selfProxy*/];
     }
     else
     {
