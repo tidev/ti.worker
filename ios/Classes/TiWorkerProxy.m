@@ -89,6 +89,16 @@
 {
     if ((self = [super _initWithPageContext:pg]))
     {
+		
+		
+		if (!path || [path isEqualToString:@""] )	{
+			NSLog(@"ti.worker module error: path error");
+		}
+		if (!host)
+			NSLog(@"ti.worker module error: host error");
+		if (!pg)
+			NSLog(@"ti.worker module error: context error");
+		
         // the kroll bridge is effectively our JS thread environment
         _bridge = [[KrollBridge alloc] initWithHost:host];
         NSURL *_url = [TiUtils toURL:path proxy:self];
@@ -124,8 +134,7 @@
         
         // we delete file below when booted
         _tempFile = [[self makeTemp:[wrapper dataUsingEncoding:NSUTF8StringEncoding]] retain];
-        NSURL *tempurl = [NSURL URLWithString:_tempFile];
-        
+        NSURL *tempurl = [NSURL fileURLWithPath:_tempFile isDirectory:NO];   
         // start the boot which will run on its own thread automatically
         [_bridge boot:self url:tempurl preload:preload];        
     }
@@ -179,7 +188,7 @@
     if (_bridge)
     {
         _booted = NO;
-        [_bridge enqueueEvent:@"terminated" forProxy:_selfProxy withObject:args withSource:_selfProxy];
+        [_bridge enqueueEvent:@"terminated" forProxy:_selfProxy withObject:args];
         // we need to give time to process the terminated event
         [self performSelector:@selector(shutdown:) withObject:nil afterDelay:0.5];
         [self fireEvent:@"terminated"];
@@ -197,7 +206,7 @@
     {
         ENSURE_SINGLE_ARG(args,NSObject); 
         NSDictionary *dict = [NSDictionary dictionaryWithObject:args forKey:@"data"];
-        [_bridge enqueueEvent:@"message" forProxy:_selfProxy withObject:dict withSource:_selfProxy];
+        [_bridge enqueueEvent:@"message" forProxy:_selfProxy withObject:dict];
     }
     else
     {
