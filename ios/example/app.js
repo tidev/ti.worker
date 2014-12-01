@@ -4,7 +4,7 @@ var window = Ti.UI.createWindow({
 
 var view = Ti.UI.createView({
     backgroundColor:"white",
-	top:20
+    top:20
 });
 
 var label1 = Ti.UI.createLabel({
