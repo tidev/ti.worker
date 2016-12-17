@@ -14,16 +14,9 @@
     if ((self = [super _initWithPageContext:pg]))
     {
         _parent = p; // no need to retain
-        _url = [u retain];
+        _url = u;
     }
     return self;
-}
-
--(void)dealloc
-{
-    RELEASE_TO_NIL(_url);
-    _parent = nil;
-    [super dealloc];
 }
 
 -(id)url
@@ -89,65 +82,51 @@
 {
     if ((self = [super _initWithPageContext:pg]))
     {
-		
-		
-		if (!path || [path isEqualToString:@""] )	{
-			NSLog(@"ti.worker module error: path error");
+		if (!path || [path isEqualToString:@""]) {
+			NSLog(@"[ERROR] Ti.Worker error: path error");
 		}
-		if (!host)
-			NSLog(@"ti.worker module error: host error");
-		if (!pg)
-			NSLog(@"ti.worker module error: context error");
+        
+        if (!host) {
+            NSLog(@"[ERROR] Ti.Worker error: host error");
+        }
+
+        if (!pg) {
+            NSLog(@"[ERROR] Ti.Worker error: context error");
+        }
 		
         // the kroll bridge is effectively our JS thread environment
         _bridge = [[KrollBridge alloc] initWithHost:host];
         NSURL *_url = [TiUtils toURL:path proxy:self];
         
-        NSLog(@"[INFO] loading worker %@",path);
-        
-        _lock = [[NSRecursiveLock alloc] init];
+        NSLog(@"[INFO] Loading worker %@",path);
+                
+        serialQueue = dispatch_queue_create("ti.worker", DISPATCH_QUEUE_SERIAL);
 
         _selfProxy = [[TiWorkerSelfProxy alloc] initWithParent:self url:path pageContext:_bridge];
 
-        NSDictionary *values = [NSDictionary dictionaryWithObjectsAndKeys:_selfProxy,@"currentWorker",nil];
-        NSDictionary *preload = [NSDictionary dictionaryWithObjectsAndKeys:values,@"App",nil];
-
         NSData *data = [TiUtils loadAppResource:_url];
-		if (data==nil)
-		{
+		if (data == nil) {
 			data = [NSData dataWithContentsOfURL:_url];
 		}
         
         NSString *jcode = nil;
         NSError *error = nil;
-        if (data==nil)
-		{
+        if (data == nil) {
 			jcode = [NSString stringWithContentsOfFile:[_url path] encoding:NSUTF8StringEncoding error:&error];
-		}
-		else
-		{
-			jcode = [[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding] autorelease];
+        } else {
+			jcode = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 		}
 
         // pull it in to some wrapper code so we can provide a start function and pre-define some variables/functions
         NSString *wrapper = [NSString stringWithFormat:@"function TiWorkerStart__(){ var worker = Ti.App.currentWorker; worker.nextTick = function(t) { setTimeout(t,0); }; %@ };", jcode];
         
         // we delete file below when booted
-        _tempFile = [[self makeTemp:[wrapper dataUsingEncoding:NSUTF8StringEncoding]] retain];
+        _tempFile = [self makeTemp:[wrapper dataUsingEncoding:NSUTF8StringEncoding]];
         NSURL *tempurl = [NSURL fileURLWithPath:_tempFile isDirectory:NO];   
         // start the boot which will run on its own thread automatically
-        [_bridge boot:self url:tempurl preload:preload];        
+        [_bridge boot:self url:tempurl preload:@{@"App": @{@"currentWorker": _selfProxy}}];
     }
     return self;
-}
-
--(void)dealloc
-{
-    RELEASE_TO_NIL(_selfProxy);
-    RELEASE_TO_NIL(_bridge);
-    RELEASE_TO_NIL(_lock);
-    RELEASE_TO_NIL(_tempFile);
-    [super dealloc];
 }
 
 -(KrollBridge*)_bridge
@@ -158,13 +137,13 @@
 -(void)booted:(id)bridge
 {
     // this callback is called when the thread is up and running
-    [_lock lock];
-    _booted = YES;
-    NSLog(@"[INFO] worker %@ (0x%X) is running", [_selfProxy url], self);
-    [_selfProxy setExecutionContext:_bridge];
-    [[NSFileManager defaultManager] removeItemAtPath:_tempFile error:nil];
-    RELEASE_TO_NIL(_tempFile);
-    [_lock unlock];
+    dispatch_async(serialQueue, ^{
+        _booted = YES;
+        NSLog(@"[INFO] Worker %@ (0x%X) is running", [_selfProxy url], self);
+        [_selfProxy setExecutionContext:_bridge];
+        [[NSFileManager defaultManager] removeItemAtPath:_tempFile error:nil];
+    });
+    
     // start our JS processing
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [_bridge evalJSWithoutResult:@"TiWorkerStart__();"];
@@ -173,47 +152,46 @@
 
 -(void)fireMessageEvent:(id)dict
 {
-    [_lock lock];
-    if (_booted)
-    {
-        // only fire events while we're not terminated
-        [self fireEvent:@"message" withObject:dict];
-    }
-    [_lock unlock];
+    dispatch_async(serialQueue, ^{
+        if (_booted) {
+            // only fire events while we're not terminated
+            [self fireEvent:@"message" withObject:dict];
+        }
+    });
 }
 
 -(void)terminate:(id)args
 {
-    [_lock lock];
-    if (_bridge)
-    {
-        _booted = NO;
-        [_bridge enqueueEvent:@"terminated" forProxy:_selfProxy withObject:args];
-        // we need to give time to process the terminated event
-        [self performSelector:@selector(shutdown:) withObject:nil afterDelay:0.5];
-        [self fireEvent:@"terminated"];
-        RELEASE_TO_NIL(_selfProxy);
-        RELEASE_TO_NIL(_bridge);
-        NSLog(@"[INFO] terminated worker (0x%X)", self);
-    }
-    [_lock unlock];
+    dispatch_async(serialQueue, ^{
+        if (_bridge) {
+            _booted = NO;
+            [_bridge enqueueEvent:@"terminated" forProxy:_selfProxy withObject:args];
+            
+            // we need to give time to process the terminated event
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                [self contextShutdown:nil];
+            });
+
+            [self fireEvent:@"terminated"];
+            NSLog(@"[INFO] Terminated worker (0x%X)", self);
+        }
+    });
 }
 
 -(void)postMessage:(id)args
 {
-    [_lock lock];
-    if (_booted)
-    {
-        ENSURE_SINGLE_ARG(args,NSObject); 
-        NSDictionary *dict = [NSDictionary dictionaryWithObject:args forKey:@"data"];
-        [_bridge enqueueEvent:@"message" forProxy:_selfProxy withObject:dict];
-    }
-    else
-    {
-        // keep trying until we're booted
-        [self performSelectorInBackground:@selector(postMessage:) withObject:args];
-    }
-    [_lock unlock];
+    ENSURE_SINGLE_ARG(args,NSObject);
+
+    dispatch_async(serialQueue, ^{
+        if (_booted) {
+            [_bridge enqueueEvent:@"message" forProxy:_selfProxy withObject:@{@"data": args}];
+        } else {
+            dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0);
+            dispatch_async(queue, ^{
+                [self postMessage:args];
+            });
+        }
+    });
 }
 
 

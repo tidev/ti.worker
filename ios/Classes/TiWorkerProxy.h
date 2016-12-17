@@ -22,7 +22,7 @@
     KrollBridge *_bridge;
     TiWorkerSelfProxy *_selfProxy;
     BOOL _booted;
-    NSRecursiveLock *_lock;
+    dispatch_queue_t serialQueue;
     NSString *_tempFile;
 }
 

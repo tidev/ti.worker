@@ -31,7 +31,7 @@
 -(id)createWorker:(id)args
 {
     ENSURE_SINGLE_ARG(args,NSString); 
-    return [[[TiWorkerProxy alloc] initWithPath:args host:[self _host] pageContext:[self executionContext]] autorelease];
+    return [[TiWorkerProxy alloc] initWithPath:args host:[self _host] pageContext:[self executionContext]];
 }
 
 
