@@ -1,7 +1,8 @@
 @Library('pipeline-library') _
 
 buildModule {
-	nodeVersion = '4.7.3'
-	sdkVersion = '6.0.3.v20170320120738'
-	androidAPILevel = '23'
+	// defaults:
+	//nodeVersion = '4.7.3' // Must have version set up on Jenkins master before it can be changed
+	//sdkVersion = '6.0.3.GA'
+	//androidAPILevel = '23' // if changed, must install on build nodes
 }
