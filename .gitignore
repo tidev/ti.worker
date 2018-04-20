@@ -18,3 +18,5 @@ xcuserdata
 build.properties
 .idea/
 libs/
+/ios/metadata.json
+ios/dist

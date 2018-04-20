@@ -3,12 +3,21 @@
  */
 #import "TiWorkerModuleAssets.h"
 
-extern NSData *filterData(NSString *thedata, NSString *identifier);
+extern NSData* filterDataInRange(NSData* thedata, NSRange range);
 
 @implementation TiWorkerModuleAssets
 
 - (NSData *)moduleAsset
 {
+  
+
+  return nil;
+}
+
+- (NSData *)resolveModuleAsset:(NSString *)path
+{
+  
+
   return nil;
 }
 

@@ -2,7 +2,7 @@
 # this is your module manifest and used by Titanium
 # during compilation, packaging, distribution, etc.
 #
-version: 1.1.0
+version: 1.2.0
 apiversion: 2
 architectures: i386 x86_64 armv7 arm64
 description: An iOS worker pool
@@ -16,4 +16,4 @@ name: iosworkermodule
 moduleid: ti.worker
 guid: d97e8b6c-a598-4b21-be51-26449733a49d
 platform: iphone
-minsdk: 3.4.1.GA
+minsdk: 5.0.0

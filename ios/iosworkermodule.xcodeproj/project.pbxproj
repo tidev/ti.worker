@@ -23,11 +23,11 @@
 
 /* Begin PBXBuildFile section */
 		249D6E9C157C334800037FDB /* TiWorkerProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 249D6E9A157C334800037FDB /* TiWorkerProxy.h */; };
-		249D6E9D157C334800037FDB /* TiWorkerProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 249D6E9B157C334800037FDB /* TiWorkerProxy.m */; };
+		249D6E9D157C334800037FDB /* TiWorkerProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 249D6E9B157C334800037FDB /* TiWorkerProxy.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		24DD6CF91134B3F500162E58 /* TiWorkerModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DD6CF71134B3F500162E58 /* TiWorkerModule.h */; };
-		24DD6CFA1134B3F500162E58 /* TiWorkerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DD6CF81134B3F500162E58 /* TiWorkerModule.m */; };
+		24DD6CFA1134B3F500162E58 /* TiWorkerModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DD6CF81134B3F500162E58 /* TiWorkerModule.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		24DE9E1111C5FE74003F90F6 /* TiWorkerModuleAssets.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DE9E0F11C5FE74003F90F6 /* TiWorkerModuleAssets.h */; };
-		24DE9E1211C5FE74003F90F6 /* TiWorkerModuleAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24DE9E1011C5FE74003F90F6 /* TiWorkerModuleAssets.mm */; };
+		24DE9E1211C5FE74003F90F6 /* TiWorkerModuleAssets.mm in Sources */ = {isa = PBXBuildFile; fileRef = 24DE9E1011C5FE74003F90F6 /* TiWorkerModuleAssets.mm */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		AA747D9F0F9514B9006C5449 /* TiWorker_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = AA747D9E0F9514B9006C5449 /* TiWorker_Prefix.pch */; };
 		AACBBE4A0F95108600F1A2B1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AACBBE490F95108600F1A2B1 /* Foundation.framework */; };
 /* End PBXBuildFile section */
@@ -254,6 +254,7 @@
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
+				VALID_ARCHS = "$(ARCHS_STANDARD)";
 			};
 			name = Debug;
 		};
@@ -291,6 +292,7 @@
 				RUN_CLANG_STATIC_ANALYZER = NO;
 				SDKROOT = iphoneos;
 				USER_HEADER_SEARCH_PATHS = "";
+				VALID_ARCHS = "$(ARCHS_STANDARD)";
 			};
 			name = Release;
 		};
