@@ -3,13 +3,13 @@
  */
 #import "TiWorkerModuleAssets.h"
 
-extern NSData* filterData(NSString* thedata, NSString* identifier);
+extern NSData *filterData(NSString *thedata, NSString *identifier);
 
 @implementation TiWorkerModuleAssets
 
-- (NSData*) moduleAsset
+- (NSData *)moduleAsset
 {
-	return nil;
+  return nil;
 }
 
 @end
