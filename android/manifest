@@ -11,7 +11,7 @@ license: Proprietary
 copyright: Copyright (c) 2016-2018 by Axway, Inc.
 
 # these should not be edited
-name: tiworker
+name: Tiworker
 moduleid: ti.worker
 guid: ec713280-46fb-46ad-b9af-4435dfca143b
 platform: android

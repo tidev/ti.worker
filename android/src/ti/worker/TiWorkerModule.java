@@ -9,7 +9,7 @@ package ti.worker;
 import org.appcelerator.kroll.KrollModule;
 import org.appcelerator.kroll.annotations.Kroll;
 
-@Kroll.module(name="tiworker", id="ti.worker")
+@Kroll.module(name="Tiworker", id="ti.worker")
 public class TiWorkerModule extends KrollModule {
 
 	private static final String TAG = "TiWorkerModule";
