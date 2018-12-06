@@ -65,6 +65,14 @@ The `worker` instance has only one property:
 
 - *url* - the url of the worker thread JS file passed in during creation.
 
+## File Location
+
+In order for your source (worker) files to be picked up, place them in the following directory:
+
+**Alloy:** `/app/lib`
+
+**Classic:** `/Resources`
+
 ## Warning
 
 [Concurrent programming](http://en.wikipedia.org/wiki/Concurrent_computing) is dangerous and error prone.  We've designed this library to make it easier to build 
