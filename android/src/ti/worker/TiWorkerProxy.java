@@ -53,9 +53,11 @@ public class TiWorkerProxy extends KrollProxy {
 
 	@Kroll.method
 	public void postMessage(Object message) {
-		final KrollDict data = new KrollDict();
-		data.put("data", message);
-		fireSyncEvent("message", data);
+		if (message != null) {
+			final KrollDict data = new KrollDict();
+			data.put("data", message);
+			fireSyncEvent("message", data);
+		}
 	}
 
 	@Override
