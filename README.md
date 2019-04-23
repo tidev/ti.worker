@@ -1,12 +1,8 @@
-# Titanium Worker Thread Module
+# Titanium Worker Module (EXPERIMENTAL)
 
 This is a Titanium module that provides a [Web Worker](http://www.whatwg.org/specs/web-apps/current-work) like interface to applications built with Titanium.
 
-This module is designed to be used when applications need to process multi-threaded application logic in the background from the main application thread.  These
-threads are typically expensive, long-lived tasks which can be executed independent of the application processing or the main UI thread.
-
-It is important to note that even though you can use this library to create worker threads, any processing or rendering that must be done by the UI will always continue
-to be single-threaded by the host OS and executed on the main "UI thread", regardless of how many parallel threads are used in the background.
+This module is designed to be used when applications need to process asynchronous application logic. Due to the limitations of Javascript engines; tasks will not be executed on a seperate thread, but instead executed asynchronously.
 
 ## Example
 
@@ -46,7 +42,7 @@ worker.addEventListener('message',function(event){
 	worker.postMessage(event.data.msg);
 });
 ```
-Note: the `worker` global variable is always defined inside the worker thread execution context.
+Note: the `worker` global variable is always defined inside the worker execution context.
 
 ## API
 
@@ -67,10 +63,8 @@ The `worker` instance has only one property:
 
 ## Warning
 
-[Concurrent programming](http://en.wikipedia.org/wiki/Concurrent_computing) is dangerous and error prone.  We've designed this library to make it easier to build 
-multi-threaded applications in Titanium.  However, you should use at your own risk and make sure you do plenty of testing on different devices. You should also understand
-the concepts of concurrent programming before using this module.
-	
+This module is experimental and has not been finalized.
+
 ## License
 Copyright (c) 2012-present by Axway Appcelerator. All Rights Reserved.
 This code is licensed under the terms of the Apache Public License, version 2.
