@@ -5,8 +5,7 @@
  * Please see the LICENSE included with this distribution for details.
  */
 
-#import "KrollBridge.h"
-#import "TiProxy.h"
+#import <TitaniumKit/TitaniumKit.h>
 
 @interface TiWorkerSelfProxy : TiProxy {
   TiProxy *_parent;

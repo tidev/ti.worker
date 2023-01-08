@@ -5,10 +5,9 @@
  * Please see the LICENSE included with this distribution for details.
  */
 
+#import <TitaniumKit/TitaniumKit.h>
+
 #import "TiWorkerModule.h"
-#import "TiBase.h"
-#import "TiHost.h"
-#import "TiUtils.h"
 #import "TiWorkerProxy.h"
 
 @implementation TiWorkerModule

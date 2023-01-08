@@ -4,16 +4,11 @@
 // OF YOUR TITANIUM SDK YOU'RE BUILDING FOR
 //
 //
-TITANIUM_SDK_VERSION = 7.5.0.GA
-
+TITANIUM_SDK_VERSION = 11.1.1.GA
 
 //
 // THESE SHOULD BE OK GENERALLY AS-IS
 //
-TITANIUM_SDK = ~/Library/Application Support/Titanium/mobilesdk/osx/$(TITANIUM_SDK_VERSION)
-TITANIUM_BASE_SDK = "$(TITANIUM_SDK)/iphone/include"
-TITANIUM_BASE_SDK2 = "$(TITANIUM_SDK)/iphone/include/TiCore"
-HEADER_SEARCH_PATHS= $(TITANIUM_BASE_SDK) $(TITANIUM_BASE_SDK2)
-
-
-
+TITANIUM_SDK = /Users/$(USER)/Library/Application Support/Titanium/mobilesdk/osx/$(TITANIUM_SDK_VERSION)
+HEADER_SEARCH_PATHS = $(inherited) "$(TITANIUM_SDK)"
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$(TITANIUM_SDK)/iphone/Frameworks"
