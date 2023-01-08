@@ -115,7 +115,7 @@
     NSString *wrapper = [NSString stringWithFormat:@"function TiWorkerStart__() { var worker = Ti.App.currentWorker; worker.nextTick = function(t) { setTimeout(t,0); }; %@\n};", jcode];
 
     // we delete file below when booted
-    _tempFile = [self makeTemp:[wrapper dataUsingEncoding:NSUTF8StringEncoding]];
+    _tempFile = [[self makeTemp:[wrapper dataUsingEncoding:NSUTF8StringEncoding]] retain];
     NSURL *tempurl = [NSURL fileURLWithPath:_tempFile isDirectory:NO];
     // start the boot which will run on its own thread automatically
     [_bridge boot:self url:tempurl preload:@{ @"App" : @{ @"currentWorker" : _selfProxy } }];
@@ -136,6 +136,7 @@
     NSLog(@"[INFO] Worker %@ (0x%X) is running", [_selfProxy url], self);
     [_selfProxy setExecutionContext:_bridge];
     [[NSFileManager defaultManager] removeItemAtPath:_tempFile error:nil];
+    [_tempFile release];
   });
 
   // start our JS processing
