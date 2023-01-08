@@ -112,7 +112,7 @@
 
     // pull it in to some wrapper code so we can provide a start function and pre-define some variables/functions
     // the newline after the wrapped code is important due to trailing sourcemap comment
-    NSString *wrapper = [NSString stringWithFormat:@"function TiWorkerStart__() { var worker = Ti.App.currentWorker; worker.nextTick = function(t) { setTimeout(t,0); }; %@\n};", jcode];
+    NSString *wrapper = [NSString stringWithFormat:@"function TiWorkerStart__() { var worker = Ti.App.currentWorker; worker.nextTick = function(t) { setTimeout(t,0); }; %@\n};\n\nglobal.TiWorkerStart__ = TiWorkerStart__;", jcode];
 
     // we delete file below when booted
     _tempFile = [[self makeTemp:[wrapper dataUsingEncoding:NSUTF8StringEncoding]] retain];
