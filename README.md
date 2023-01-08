@@ -1,4 +1,4 @@
-# Titanium Worker Module (EXPERIMENTAL)
+# Titanium Worker Module
 
 This is a Titanium module that provides a [Web Worker](http://www.whatwg.org/specs/web-apps/current-work) like interface to applications built with Titanium.
 
@@ -73,6 +73,8 @@ In order for your source (worker) files to be picked up, place them in the follo
 
 This module is experimental and has not been finalized.
 
-## License
-Copyright (c) 2012-present by Axway Appcelerator. All Rights Reserved.
-This code is licensed under the terms of the Apache Public License, version 2.
+## Legal
+
+Titanium is a registered trademark of TiDev Inc. All Titanium trademark and patent rights were transferred
+and assigned to TiDev Inc. on 4/7/2022. Please see the LEGAL information about using our trademarks,
+privacy policy, terms of usage and other legal information at https://tidev.io/legal.
